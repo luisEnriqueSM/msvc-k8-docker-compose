@@ -54,8 +54,10 @@ services:
 volumes:
   mysql_data_k8:
     name: mysql_data_k8
+    external: true
   postgres_data_volume:
     name: postgres_data_volume
+    external: true
 
 networks:
   springcloud:
