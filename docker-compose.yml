@@ -48,7 +48,7 @@ services:
       - springcloud
     depends_on:
       - postgres-container
-      - msvc_k8_users
+      - msvc-k8-users
     restart: always
 
 volumes:
