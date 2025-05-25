@@ -1,9 +1,10 @@
 services:
   mysql8:
+    container_name: mysql8
     image: mysql:8.0.42
-    port:
+    ports:
       - "3306:3306"
-    environments:
+    environment:
       - MYSQL_ROOT_PASSWORD=sasa1234
       - MYSQL_DATABASE=msvc_k8_users
     volumes:
@@ -11,11 +12,12 @@ services:
     restart: always
     networks:
       - springcloud  
-  postgres17:
+  postgres-container:
+    container_name:  postgres-container
     image: postgres:latest
     ports:
       - "5432:5432"
-    environments:
+    environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=sasa
       - POSTGRES_DB=msvc-k8-courses
@@ -25,10 +27,11 @@ services:
     networks:
       - springcloud
   msvc-k8-users:
+    container_name: msvc-k8-users
     image: msvc-k8-users:latest
     ports:
       - "8001:8001"
-    env_file: /msvc-k8-users/.env
+    env_file: ./msvc-k8-users/.env
     networks:
       - springcloud
     depends_on:
@@ -36,19 +39,23 @@ services:
     restart: always
 
   msvc-k8-courses:
+    container_name: msvc-k8-courses
     image: msvc-k8-courses:latest
     ports:
       - "8002:8002"
-    env_file: /msvc-k8-courses/.env
+    env_file: ./msvc-k8-courses/.env
     networks:
       - springcloud
     depends_on:
-      - postgres17
+      - postgres-container
+      - msvc_k8_users
     restart: always
 
-  volumes:
-    mysql_data_k8:
-    postgres_data_volume:
+volumes:
+  mysql_data_k8:
+    name: mysql_data_k8
+  postgres_data_volume:
+    name: postgres_data_volume
 
-  networks:
-    springcloud:
+networks:
+  springcloud:
