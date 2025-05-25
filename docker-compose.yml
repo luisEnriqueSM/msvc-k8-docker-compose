@@ -1,0 +1,54 @@
+services:
+  mysql8:
+    image: mysql:8.0.42
+    port:
+      - "3306:3306"
+    environments:
+      - MYSQL_ROOT_PASSWORD=sasa1234
+      - MYSQL_DATABASE=msvc_k8_users
+    volumes:
+      - mysql_data_k8:/var/lib/mysql
+    restart: always
+    networks:
+      - springcloud  
+  postgres17:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environments:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=sasa
+      - POSTGRES_DB=msvc-k8-courses
+    volumes:
+      - postgres_data_volume:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - springcloud
+  msvc-k8-users:
+    image: msvc-k8-users:latest
+    ports:
+      - "8001:8001"
+    env_file: /msvc-k8-users/.env
+    networks:
+      - springcloud
+    depends_on:
+      - mysql8
+    restart: always
+
+  msvc-k8-courses:
+    image: msvc-k8-courses:latest
+    ports:
+      - "8002:8002"
+    env_file: /msvc-k8-courses/.env
+    networks:
+      - springcloud
+    depends_on:
+      - postgres17
+    restart: always
+
+  volumes:
+    mysql_data_k8:
+    postgres_data_volume:
+
+  networks:
+    springcloud:
