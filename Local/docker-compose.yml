@@ -28,7 +28,7 @@ services:
       - springcloud
   msvc-k8-users:
     container_name: msvc-k8-users
-    image: luisenriquesm/msvc-k8-users
+    image: luisenriquesm/msvc-k8-users:v1
     ports:
       - "8001:8001"
     env_file: ./msvc-k8-users/.env
@@ -40,7 +40,7 @@ services:
 
   msvc-k8-courses:
     container_name: msvc-k8-courses
-    image: luisenriquesm/msvc-k8-courses
+    image: luisenriquesm/msvc-k8-courses:v1
     ports:
       - "8002:8002"
     env_file: ./msvc-k8-courses/.env
